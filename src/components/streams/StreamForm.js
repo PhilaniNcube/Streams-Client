@@ -1,7 +1,7 @@
 import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 
-class StreamCreate extends React.Component {
+class StreamForm extends React.Component {
   renderError({ error, touched }) {
     if (touched && error) {
       return (
@@ -23,36 +23,44 @@ class StreamCreate extends React.Component {
     );
   };
 
-  onSubmit(formValues) {
-    console.log(formValues);
-  }
+  onSubmit = (formValues) => {
+    this.props.onSubmit(formValues);
+  };
 
   render() {
     return (
-      <form
-        onSubmit={this.props.handleSubmit(this.onSubmit)}
-        className="ui form error"
-      >
-        <Field name="title" component={this.renderInput} label="Enter Title" />
-        <Field
-          name="description"
-          component={this.renderInput}
-          label="Enter Description"
-        />
-        <button className="ui button primary">Submit</button>
-      </form>
+      <div>
+        <form
+          className="ui form error"
+          onSubmit={this.props.handleSubmit(this.onSubmit)}
+        >
+          <Field
+            name="title"
+            component={this.renderInput}
+            label="Enter Title"
+          />
+          <Field
+            name="description"
+            component={this.renderInput}
+            label="Enter Description"
+          />
+          <button className="ui button primary">Submit</button>
+        </form>
+      </div>
     );
   }
 }
 
-const validate = formValues => {
+const validate = (formValues) => {
   const errors = {};
 
   if (!formValues.title) {
+    // only run if the user did not enter a title
     errors.title = 'You must enter a title';
   }
 
   if (!formValues.description) {
+    // only run if the user did not enter a description
     errors.description = 'You must enter a description';
   }
 
@@ -60,6 +68,6 @@ const validate = formValues => {
 };
 
 export default reduxForm({
-  form: 'streamCreate',
-  validate
-})(StreamCreate);
+  form: 'streamForm',
+  validate,
+})(StreamForm);
